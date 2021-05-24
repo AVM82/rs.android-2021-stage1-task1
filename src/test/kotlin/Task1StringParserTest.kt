@@ -1,11 +1,18 @@
-import org.junit.Test
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue
+import org.junit.Test
 import subtask3.StringParser
 
 class Task1StringParserTest {
 
     private val stringParser = StringParser()
+
+    @Test
+    fun testAngleBrackets() {
+        val inputStr = "123<111<222>333>444"
+        val result = arrayOf("222", "111<222>333")
+        assertArrayEquals(result, stringParser.getResult(inputStr))
+    }
 
     @Test
     fun testStringParser1() {
@@ -20,7 +27,12 @@ class Task1StringParserTest {
                 "The numbers(3500) are incredible, so difficult." +
                 " I said we wanted to write our own stories, create our own history," +
                 " said Klopp(the boss of Liverpool[English football club])."
-        val result = arrayOf("link", "3500", "the boss of Liverpool[English football club]", "English football club")
+        val result = arrayOf(
+            "link",
+            "3500",
+            "the boss of Liverpool[English football club]",
+            "English football club"
+        )
         assertArrayEquals(result, stringParser.getResult(inputStr))
     }
 
@@ -44,8 +56,9 @@ class Task1StringParserTest {
         val testSubStr2 = "ipsum [dolor <sit] amet"
         assertTrue(testSubStr2 in parsedArray)
 
-        val testSubStr3 = "(ipsum [dolor <sit] amet), consectetur adipiscing elit>. Integer nec odio. " +
-                "Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet"
+        val testSubStr3 =
+            "(ipsum [dolor <sit] amet), consectetur adipiscing elit>. Integer nec odio. " +
+                    "Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet"
         assertTrue(testSubStr3 in parsedArray)
 
         val testSubStr4 = "sit] amet), consectetur adipiscing elit"
@@ -54,7 +67,8 @@ class Task1StringParserTest {
         val testSubStr5 = "dolor <sit"
         assertTrue(testSubStr5 in parsedArray)
 
-        val testSubStr6 = "nulla. Class aptent <taciti [sociosqu ad] litora torquent per conubia> nostra"
+        val testSubStr6 =
+            "nulla. Class aptent <taciti [sociosqu ad] litora torquent per conubia> nostra"
         assertTrue(testSubStr6 in parsedArray)
 
         val testSubStr7 = "taciti [sociosqu ad] litora torquent per conubia"
