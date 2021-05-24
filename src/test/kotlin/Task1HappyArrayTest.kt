@@ -1,10 +1,29 @@
 import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import subtask1.HappyArray
 
 class Task1HappyArrayTest {
 
     private val converter = HappyArray()
+
+    @Test
+    fun testIsNotHappyArray() {
+        val sadArray = intArrayOf(1, 5, 2, 7, 93, 8, 9, 3)
+        assertEquals(false, converter.isHappyArray(sadArray))
+    }
+
+    @Test
+    fun testIsHappyArray() {
+        val happyArray = intArrayOf(1, 2, 7, 8, 9, 3)
+        assertEquals(true, converter.isHappyArray(happyArray))
+    }
+
+    @Test
+    fun testIsHappyArrayTwoElements() {
+        val happyArray = intArrayOf(1, 9)
+        assertEquals(true, converter.isHappyArray(happyArray))
+    }
 
     @Test
     fun testTask1Array1() {
