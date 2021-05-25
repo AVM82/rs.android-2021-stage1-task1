@@ -1,23 +1,23 @@
 package subtask3
 
 class StringParser {
-    private var str = arrayListOf<String>()
 
-    class Brackets(val head: Char, val tail: Char, var tailIndex: Int = 0)
-
+    private var resultArray = arrayListOf<String>()
     private val angleBrackets = Brackets(head = '<', tail = '>')
     private val squareBrackets = Brackets(head = '[', tail = ']')
     private val roundBrackets = Brackets(head = '(', tail = ')')
 
-
     private fun findTail(substring: String, brackets: Brackets): Int {
-        substring.forEachIndexed { i, c ->
-            when (c) {
-                brackets.tail -> if (i != brackets.tailIndex) return i
+        substring.forEachIndexed { index, char ->
+            when (char) {
+                brackets.tail -> if (index != brackets.tailIndex) return index
                 brackets.head -> {
                     brackets.tailIndex =
-                        i + 1 + findTail(substring.substring(i + 1, substring.length), brackets)
-                    str.add(substring.substring(i + 1, brackets.tailIndex))
+                        index + 1 + findTail(
+                            substring.substring(index + 1, substring.length),
+                            brackets
+                        )
+                    resultArray.add(substring.substring(index + 1, brackets.tailIndex))
                 }
             }
         }
@@ -26,46 +26,26 @@ class StringParser {
 
     fun getResult(inputString: String): Array<String> {
 
-        inputString.forEachIndexed { i, char ->
+        inputString.forEachIndexed { index, char ->
             when (char) {
-                angleBrackets.head -> {
-                    if (i > angleBrackets.tailIndex) {
-                        val substring = inputString.substring(i + 1, inputString.length)
-                        str.add(
-                            inputString.substring(
-                                i + 1,
-                                i + 1 + findTail(substring, angleBrackets)
-                            )
-                        )
-                        angleBrackets.tailIndex += i
-                    }
-                }
-                squareBrackets.head -> {
-                    if (i > squareBrackets.tailIndex) {
-                        val substring = inputString.substring(i + 1, inputString.length)
-                        str.add(
-                            inputString.substring(
-                                i + 1,
-                                i + 1 + findTail(substring, squareBrackets)
-                            )
-                        )
-                        squareBrackets.tailIndex += i
-                    }
-                }
-                roundBrackets.head -> {
-                    if (i > roundBrackets.tailIndex) {
-                        val substring = inputString.substring(i + 1, inputString.length)
-                        str.add(
-                            inputString.substring(
-                                i + 1,
-                                i + 1 + findTail(substring, roundBrackets)
-                            )
-                        )
-                        roundBrackets.tailIndex += i
-                    }
-                }
+                angleBrackets.head -> putSubstringToArray(index, inputString, angleBrackets)
+                squareBrackets.head -> putSubstringToArray(index, inputString, squareBrackets)
+                roundBrackets.head -> putSubstringToArray(index, inputString, roundBrackets)
             }
         }
-        return str.toTypedArray()
+        return resultArray.toTypedArray()
+    }
+
+    private fun putSubstringToArray(index: Int, inputString: String, brackets: Brackets) {
+        if (index > brackets.tailIndex) {
+            val substring = inputString.substring(index + 1, inputString.length)
+            resultArray.add(
+                inputString.substring(
+                    index + 1,
+                    index + 1 + findTail(substring, brackets)
+                )
+            )
+            brackets.tailIndex += index
+        }
     }
 }
